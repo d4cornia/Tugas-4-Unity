@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+<<<<<<< HEAD:Tugas 3/Assets/Animations/Player_idleDown.anim.meta
+guid: f61967da173e7864fbeadc9206151055
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 7400000
+=======
+guid: 17a82da630954734c813c8fc5d3f3201
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+>>>>>>> 0c875ced8d802e3de85241f49d3a566f1040f81c:Tugas 3/Assets/Material/Wall Material.mat.meta
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
