@@ -6,16 +6,18 @@ using CodeMonkey.Utils;
 public class fieldOfView : MonoBehaviour
 {
     [SerializeField]
-    private LayerMask layerMask;
+    public LayerMask layerMask;
     // layer mask digunakan untuk supaya raycast ngecek collide di layer apa
     // yang ada di layermask yang akan dicek, yang tidak ada maka akan diignore
 
     public Mesh mesh;
-    private Vector3 origin;
+    public Vector3 origin;
     public float curAngle;
     public float fov;
     public float viewDistance;
     public int rayCtr;
+    public GameObject obj;
+    public RaycastHit2D rayCast; // rayCast yang neghit object
 
 
     // Start is called before the first frame update
@@ -47,6 +49,7 @@ public class fieldOfView : MonoBehaviour
 
         int vertexIndex = 1;
         int triIndex = 0;
+        obj = null;
         for (int i = 0; i <= rayCtr; i++)
         {
             Vector3 vertex;
@@ -60,7 +63,8 @@ public class fieldOfView : MonoBehaviour
             else
             {
                 // hit object
-                Debug.Log(raycastHit2D.collider.gameObject.name);
+                rayCast = raycastHit2D;
+                obj = raycastHit2D.collider.gameObject;
                 vertex = raycastHit2D.point;
                 // jadi jika kena object maka titik render hanya di point object kena raycast 2d itu
             }

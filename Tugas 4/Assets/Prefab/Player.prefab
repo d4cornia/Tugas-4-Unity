@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 1104388114}
   - component: {fileID: 1104388113}
   - component: {fileID: 8877059787531451631}
+  - component: {fileID: 183657582}
   m_Layer: 9
   m_Name: Player
   m_TagString: Untagged
@@ -111,7 +112,7 @@ MonoBehaviour:
   - {x: -0.20147085, y: 0.35691714, z: 0}
   m_ShapePathHash: 1660282757
   m_Mesh: {fileID: 0}
-  m_InstanceId: -1736
+  m_InstanceId: -26422
 --- !u!114 &2706568203670751725
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -126,9 +127,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_LightType: 1
   m_BlendStyleIndex: 0
-  m_FalloffIntensity: 1
+  m_FalloffIntensity: 0.79
   m_Color: {r: 0.53333336, g: 0.77085525, b: 1, a: 1}
-  m_Intensity: 0.36
+  m_Intensity: 0.67
   m_LightVolumeOpacity: 0
   m_ApplyToSortingLayers: 00000000072f16354913c9043544ed85e3d85000
   m_LightCookieSprite: {fileID: 0}
@@ -146,7 +147,7 @@ MonoBehaviour:
   m_ShapeLightParametricSides: 48
   m_ShapeLightParametricAngleOffset: 0
   m_ShapeLightParametricRadius: 2
-  m_ShapeLightFalloffSize: 2.37
+  m_ShapeLightFalloffSize: 2.67
   m_ShapeLightFalloffOffset: {x: 0, y: 0}
   m_ShapePath:
   - {x: -0.20651293, y: 0.12636185, z: 0}
@@ -223,3 +224,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!58 &183657582
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 412013072822862833}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.45

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7320679310771353494}
   - component: {fileID: 7320679310771353493}
   - component: {fileID: 7320679310771353492}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: FieldOfView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -27,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7320679310771353490}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.4, y: -1.47, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -47,12 +47,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   layerMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 3895
   mesh: {fileID: 0}
+  origin: {x: 0, y: 0, z: 0}
   curAngle: 0
-  fov: 60
-  viewDistance: 5
+  fov: 45
+  viewDistance: 10
   rayCtr: 50
+  obj: {fileID: 0}
 --- !u!33 &7320679310771353493
 MeshFilter:
   m_ObjectHideFlags: 0

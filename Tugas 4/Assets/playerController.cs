@@ -5,7 +5,8 @@ using UnityEngine;
 using UnityEngine.Experimental.Rendering.Universal;
 
 public class playerController : MonoBehaviour
-{
+{ 
+
     public Rigidbody2D rb;
     public GameObject playerObj;
     public float maxSpeed;
@@ -27,8 +28,8 @@ public class playerController : MonoBehaviour
             rb = playerObj.GetComponent<Rigidbody2D>();
             animator = playerObj.GetComponent<Animator>();
             fov = Instantiate(GameObject.Find("FieldOfView").GetComponent<fieldOfView>());
+            fov.name = "playerFOV";
             light = playerObj.GetComponent<Light2D>();
-           
         }
         look = 4;
     }
