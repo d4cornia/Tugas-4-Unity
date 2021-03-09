@@ -102,6 +102,7 @@ MonoBehaviour:
   maxSpeed: 2
   acceleration: 1
   fov: {fileID: 0}
+  blindSpotFOV: {fileID: 0}
 --- !u!50 &7936529196282730040
 Rigidbody2D:
   serializedVersion: 4

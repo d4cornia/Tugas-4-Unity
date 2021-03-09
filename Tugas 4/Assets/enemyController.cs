@@ -18,8 +18,8 @@ public class enemyController : MonoBehaviour
     public float acceleration;
 
 
-    [SerializeField]
     public fieldOfView fov;
+    public fieldOfView blindSpotFOV;
 
     private static int ctr_id = 0;
     private int id;
@@ -36,8 +36,13 @@ public class enemyController : MonoBehaviour
             rbTarget = GameObject.Find("Player").GetComponent<Rigidbody2D>();
             fov = Instantiate(GameObject.Find("FieldOfView").GetComponent<fieldOfView>());
             fov.name = "enemyFOV" + enemyObj.name;
-            fov.fov = 135;
+            fov.fov = 140;
             fov.viewDistance = 5;
+
+            blindSpotFOV = Instantiate(GameObject.Find("FieldOfView").GetComponent<fieldOfView>());
+            blindSpotFOV.name = "enemyblindSpotFOV" + enemyObj.name;
+            blindSpotFOV.fov = 400;
+            blindSpotFOV.viewDistance = 2;
         }
     }
 
@@ -51,7 +56,7 @@ public class enemyController : MonoBehaviour
         steering = characterAvoidance();
         updateMovement(steering);
 
-        if (fov.obj != null)
+        if (fov.obj != null || blindSpotFOV.obj != null)
         {
             //Debug.Log(fov.obj.name);
             Vector2 temp = wallCollisionAvoidance();
@@ -84,6 +89,7 @@ public class enemyController : MonoBehaviour
             rb.AddForce(steering.linear * Time.deltaTime, ForceMode2D.Impulse);
             fov.curAngle = UtilsClass.GetAngleFromVector(rb.velocity.normalized) + fov.fov / 2f;
             fov.setOrigin(rb.transform.position);
+            blindSpotFOV.setOrigin(rb.transform.position);
         }
     }
 
@@ -108,18 +114,20 @@ public class enemyController : MonoBehaviour
     Vector2 wallCollisionAvoidance()
     {
         // Paramter
-        float avoidDistance = 40;
-        //
-        /*Vector3 rayVector = rb.velocity;
-        rayVector = rayVector.normalized;
-        rayVector *= lookahead;*/
-
-        Rigidbody2D rb_target = fov.obj.GetComponent<Rigidbody2D>(); // Cari Raycast
-        if (fov.obj == null)
+        float avoidDistance = 50;
+        Vector2 target = Vector2.zero;
+        if(fov.obj != null)
         {
-            return Vector2.zero;
+            Debug.Log("fov masuk");
+            Rigidbody2D rb_target = fov.obj.GetComponent<Rigidbody2D>(); // Cari rb dari object yang intersect dengan Raycast
+            target = ((Vector2)rb_target.transform.position) + fov.rayCast.normal * avoidDistance;
         }
-        Vector2 target = ((Vector2)rb_target.transform.position) + fov.rayCast.normal * avoidDistance;
+        else if(blindSpotFOV.obj != null)
+        {
+            Debug.Log("blindSpotFOV masuk");
+            Rigidbody2D rb_target = blindSpotFOV.obj.GetComponent<Rigidbody2D>();
+            target = ((Vector2)rb_target.transform.position) + blindSpotFOV.rayCast.normal * avoidDistance;
+        }
         // Debug.DrawLine(rb.transform.position + new Vector3(0,0,-5), rb.transform.position + new Vector3(rb.velocity.x, rb.velocity.y, -5), Color.red, 1, true);
 
         return target; // Terus manggil Seek
