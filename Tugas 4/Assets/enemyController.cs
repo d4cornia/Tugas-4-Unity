@@ -21,6 +21,12 @@ public class enemyController : MonoBehaviour
     [SerializeField]
     public fieldOfView fov;
 
+    private static int ctr_id = 0;
+    private int id;
+    public enemyController() {
+        id = ctr_id++;
+    }
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -31,7 +37,7 @@ public class enemyController : MonoBehaviour
             fov = Instantiate(GameObject.Find("FieldOfView").GetComponent<fieldOfView>());
             fov.name = "enemyFOV" + enemyObj.name;
             fov.fov = 135;
-            fov.viewDistance = 3;
+            fov.viewDistance = 5;
         }
     }
 
@@ -102,7 +108,7 @@ public class enemyController : MonoBehaviour
     Vector2 wallCollisionAvoidance()
     {
         // Paramter
-        float avoidDistance = 25;
+        float avoidDistance = 40;
         //
         /*Vector3 rayVector = rb.velocity;
         rayVector = rayVector.normalized;
@@ -120,71 +126,50 @@ public class enemyController : MonoBehaviour
     }
 
     Steering characterAvoidance() {
-        float radius = 5; // Parameter
-        float maxAcceleration = 3;
-        // Store the first collision time
-        float shortestTime = Mathf.Infinity;
-        // Target Information
-        Rigidbody2D firstTarget = null;
-        float firstMinSeperation = 0f;
-        float firstDistance = 0f;
-        Vector3 firstRelativePos = new Vector3();
-        Vector3 firstRelativeVel = new Vector3();
-        // Search target
+        // return variable
+        Steering steering = null;
+        // Constant
+        float radius = 2;
+        // Temp
+        Rigidbody2D firstRb = null;
+        float firstLength = Mathf.Infinity;
+        // Iterate Setiap AI
         var list_enemy = GameObject.FindGameObjectsWithTag("AI");
-        foreach (var enemy in list_enemy)
-        {
-            if(enemy.GetInstanceID() == this.GetInstanceID())
-            {
+        foreach (var enemy in list_enemy) {
+            if (enemy.GetComponent<enemyController>().id == this.id) {
                 continue;
             }
-            Rigidbody2D target_rb = enemy.GetComponent<Rigidbody2D>();
-            // Calculate the time to collision
-            Vector3 relativePos = target_rb.position - rb.position;
-            Vector3 relativeVel = target_rb.velocity - rb.velocity;
-            float relativeSpeed = relativeVel.magnitude;
-            Debug.Log("dot " + Vector3.Dot(relativePos, relativeVel));
-            Debug.Log("relativeSpeed " + relativeSpeed);
-            float timeToCollision = 0;
-            if (Vector3.Dot(relativePos, relativeVel) != 0 && (relativeSpeed * relativeSpeed) != 0)
-            {
-                timeToCollision = Vector3.Dot(relativePos, relativeVel) / (relativeSpeed * relativeSpeed);
-            }
-            Debug.Log("timeToCollision " + timeToCollision);
-
-            float distance = relativePos.magnitude;
-            float minSeperation = distance - relativeSpeed * shortestTime;
-            if(minSeperation > 2 * radius) {
+            Rigidbody2D rb_target = enemy.GetComponent<Rigidbody2D>();
+            // Get Prediction Position (This Enemy)
+            Vector2 predThis = new Vector2(rb.transform.position.x, rb.transform.position.y) + rb.velocity;
+            // Get Prediction Position (Other Enemy)
+            Vector2 predOther = new Vector2(rb_target.transform.position.x, rb_target.transform.position.y) + rb_target.velocity;
+            // Dapetin Selisih Posisi
+            Vector2 diff = predThis - predOther;
+            float length_diff = diff.magnitude;
+            if (length_diff > radius) {
                 continue;
+            } else {
+                Debug.Log("Length Diff: " + length_diff);
+                Debug.Log("MASUK");
+                Debug.DrawLine(predThis, predOther, Color.red, 10000, true);
+                if (length_diff < firstLength) {
+                    firstRb = rb_target;
+                    firstLength = length_diff;
+                }
             }
-            if (timeToCollision > 0 && timeToCollision < shortestTime)
-            {
-                shortestTime = timeToCollision;
-                firstTarget = target_rb;
-                firstMinSeperation = minSeperation;
-                firstDistance = distance;
-                firstRelativePos = relativePos;
-                firstRelativeVel = relativeVel;
-            }
+            
         }
-        // Check Target
-        if (firstTarget == null) {
+        // Check apakah ketemu target
+        if (firstRb == null) {
             return null;
-        }
-        // Avoid
-        if (firstMinSeperation <= 0 || firstDistance < 2 * radius) {
-            firstRelativePos = firstTarget.position - rb.position;
         } else {
-            firstRelativePos = firstRelativePos + firstRelativeVel * shortestTime;
+            // Action AI menjauhi AI lainnya
+            Debug.Log("OTW NABRAK");
+            rb.AddForce(new Vector2(rb.velocity.y, -rb.velocity.x), ForceMode2D.Impulse);
+            Debug.DrawLine(rb.position, rb.position + rb.velocity, Color.green);
         }
-
-        firstRelativePos = firstRelativePos.normalized;
-        Steering steering = new Steering();
-        steering.linear = firstRelativePos * maxAcceleration;
-        Debug.DrawLine(rb.transform.position + new Vector3(0, 0, -5), rb.transform.position + new Vector3(steering.linear.x, steering.linear.y, -5) * 10, Color.green, 1, true); ;
-        Debug.DrawLine(rb.transform.position + new Vector3(0, 0, -5), rb.transform.position + new Vector3(rb.velocity.x, rb.velocity.y, -5) * 10, Color.red, 1, true); ;
         return steering;
-
     }
 
 }
